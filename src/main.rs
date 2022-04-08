@@ -8,6 +8,7 @@
 use std::io::stdin;
 use std::io::Write;
 use std::process::Command;
+use std::path::Path;
 
 // Main function
 fn main() {
@@ -32,18 +33,35 @@ fn main() {
         // Get the arguments
         let args = parts;
 
-
+        // Built in commands
+        match command {
+            "cd" => {
+                let new_dir = args.peekable().peek().map_or("/", |x| *x);
+                let root = Path::new(new_dir);
+                if let Err(e) = std::env::set_current_dir(root) {
+                    println!("{}", e);
+                }
+            },
+            "exit" => return,
+            command => {
+                // Run the command in the shell
+                let mut child = Command::new(command)
+                    .args(args)
+                    .spawn();
+                
+                // gracefully handle malformed commands
+                match child {
+                    Ok(mut child) => { child.wait(); }, 
+                    Err(e) => eprintln!("{}", e),
+                };
+            }
+        }
     
     
-        // Run the command in the shell
-        let mut child = Command::new(command)
-            .args(args)
-            .spawn()
-            .expect("Failed to run command");
 
         // do not acccept other commands until the current command is finished
-        child.wait()
-            .expect("Failed to wait for command");
+        // and gracefully exit if the command is not found
+
     }
 
 }
