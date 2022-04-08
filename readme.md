@@ -24,4 +24,4 @@ Third, cd and run it:
 ```
 cd rshell
 cargo run
-``
+```
