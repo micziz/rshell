@@ -10,4 +10,18 @@ rShell is a minimal yet functional shell made in rust.
 
 ## Install
 
-rShell is really in early dev stage. You will need to find how to download it yourself.
+First of all install rust using [rustup](rustup.rs)
+
+Second, clone the github repo:
+
+```
+git clone https://www.github.com/micziz/rshell.git
+```
+
+
+Third, cd and run it:
+
+```
+cd rshell
+cargo run
+``
